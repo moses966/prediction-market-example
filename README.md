@@ -13,9 +13,9 @@ This guide provides step-by-step instructions to:
 - Obtain an API key from [Alchemy](https://www.alchemy.com/).
 
 ---
-Run: `git clone `
+Run: `git clone https://github.com/moses966/prediction-market-example`
 
-And then inside the `prediction-market` folder, run `poetry add` and then `poetry shell`
+And then inside the `prediction-market-example` folder, run `poetry add` and then `poetry shell`
 
 Since apeworx doesn't currently support UMA's versioning system, we are going to do some manual work here where, we have to manually copy and paste the necessary UMA contracts folder(can later be added to `.gitignore`).
 Clone the protocol contracts [here](https://github.com/UMAprotocol/protocol/tree/9bfbbe98bed0ac7d9c924115018bb0e26987e2b5) and then locate the folder(`contracts/`) at `./packages/core/contracts/`. Copy this folder and paste it to `./contracts/dependencies/` in your current project.

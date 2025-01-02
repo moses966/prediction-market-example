@@ -1,0 +1,17 @@
+{
+    "address_whitelist": "0x72985DB0AD8030E54CA2B8613ad402FFAfD5C9b4",
+    "currency_address": "0x9C1fB2806855BFdB8d8f57E8c1CF053ad178d694",
+    "finder_address": "0x5793C2DCD0DbF08D828840Bca6dC3DC72D56C88E",
+    "ancillary_data_address": "0x234F1fd05F3f4b26fe5aA8226223444234B57dec",
+    "OOV3_address": "0xCF8531Eb71fEB606fA8B73E1b559eC3033f7d54e",
+    "outcome1_token_address": "0xCbB390fAD21D44C0a1Fc202dA609454dE48be882",
+    "outcome2_token_address": "0xC293Db9BA3986Bb7C1b5E9beEAfEcC989E3394b6",
+    "store_contract_address": "0xEA6a0B1cec56aCdF19547d5aC1D34852042794A9",
+    "mock_oracle_address": "0x290E14B93E37b134B9DA52E22B77EDa7295B2898",
+    "identifier_address": "0x60aca31472B47C21D6AC7E3618d44FAcC08cF95E",
+    "market_address": "0x983C76FE2F467A80FA1734c77e6c1d4Cb0B59F2F",
+    "expanded_token_blueprint_address": "0xD283eC30F762369c9582AE8D63928AF73a474c39",
+    "outcome_token_factory_address": "0x6910b390850C77867eec34bcC9b108ffa040a669",
+    "market_id": "0xf820f2de64bc1047d2ea75b94ed32047c6e53bcc0e0376bd5a1b39932a38ea55",
+    "assertion_id": "0x9c248caaa76ae228721fc45c0a25a0b32578cf78ffa6fcee18130ad22a118f28"
+}
