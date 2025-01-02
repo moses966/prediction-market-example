@@ -13,7 +13,7 @@ This guide provides step-by-step instructions to:
 - Obtain an API key from [Alchemy](https://www.alchemy.com/).
 
 ---
-Run: `git clone https://github.com/moses966/prediction-market-example`
+Run: `git clone https://github.com/moses966/prediction-market-example.git`
 
 And then inside the `prediction-market-example` folder, run `poetry add` and then `poetry shell`
 
@@ -127,9 +127,9 @@ APE_METHOD=init ape run market --network ethereum:local:foundry
 Here the description shows that it's a market based on whether Manchester United won the 2025 Champions League Title or not. The two possible outcomes are `YES` or `NO`. We offer `100` units of `currency` to the asserter of the claim and require a bond of `5,000` units of `currecny` to assert or dispute the assertion. Therefore, we mint the amount of asserter rewards and approve them before creating the market.
 Please take note of the `deployer's` currency balance before and after market initialization.
 
-### create out come tokens
+### create outcome tokens
 
-We can now create Otcome tokens by running the following command:
+We can now create Outcome tokens by running the following command:
 
 ```bash
 APE_METHOD=create ape run market --network ethereum:local:foundry

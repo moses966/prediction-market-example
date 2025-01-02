@@ -54,7 +54,7 @@ class PredictionMarketManager:
 
         # deploy the prediction market
         contract = self.deployer.deploy(
-            project.Experiment,
+            project.PredictionMarket,
             self.finder,
             self.address_whitelist,
             self.oov3,
@@ -81,7 +81,7 @@ class PredictionMarketManager:
         token = project.TestERC20.at(self.currency, fetch_from_explorer=False)
         print(f"Deployer Balance before market Initialization: {contract_balance}")
 
-        pred_market = project.Experiment.at(_address, fetch_from_explorer=False)
+        pred_market = project.PredictionMarket.at(_address, fetch_from_explorer=False)
     
         # Call the initialize_market function
         receipt = pred_market.initialize_market(
@@ -124,7 +124,7 @@ class PredictionMarketManager:
         balance = token.balanceOf(self.deployer)
         print(f"Deployer's currency balance before creating outcome tokens: {balance / 1e18}")
 
-        pred_market = project.Experiment.at(_address, fetch_from_explorer=False)
+        pred_market = project.PredictionMarket.at(_address, fetch_from_explorer=False)
         print("Market Struct: ", pred_market.markets(_market_id)) # visually confirm market was initialized.
 
         pred_market.create_outcome_tokens(_market_id, constants.amount, sender=self.deployer)
@@ -154,7 +154,7 @@ class PredictionMarketManager:
         outcome_token_one = get_value("outcome1_token_address")
         outcome_token_two = get_value("outcome2_token_address")
 
-        pred_market = project.Experiment.at(_address, fetch_from_explorer=False)
+        pred_market = project.PredictionMarket.at(_address, fetch_from_explorer=False)
         pred_market.redeem_outcome_tokens(_market_id, constants.redeem_amount, sender=self.deployer)
 
         # After redeeming 5,000 tokens we can see how both balances of outcome_token_one 
@@ -195,7 +195,7 @@ class PredictionMarketManager:
         balance = token.balanceOf(self.asserter_wallet)
         print(f"Asserter's balance before market assertion: {balance / 1e18}")
 
-        pred_market = project.Experiment.at(_address, fetch_from_explorer=False)
+        pred_market = project.PredictionMarket.at(_address, fetch_from_explorer=False)
         receipt = pred_market.assert_market(_market_id, constants.outcome_one, sender=self.asserter_wallet) # assert market
 
         balance = token.balanceOf(self.asserter_wallet)
@@ -226,7 +226,7 @@ class PredictionMarketManager:
         """
         Settle Outcome Tokens
         """
-        pred_market = project.Experiment.at(get_value("market_address"), fetch_from_explorer=False)
+        pred_market = project.PredictionMarket.at(get_value("market_address"), fetch_from_explorer=False)
        
         pred_market.settle_outcome_tokens(HexBytes(get_value("market_id")), sender=self.deployer)
         pred_market.settle_outcome_tokens(HexBytes(get_value("market_id")), sender=self.user)

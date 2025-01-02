@@ -8,7 +8,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-eth-ape = {extras = ["recommended-plugins"], version = "^0.8.24"}
+eth-ape = {version = "0.8.23", extras = ["recommended-plugins"]}
 snekmate = "^0.1.0"
 
 
