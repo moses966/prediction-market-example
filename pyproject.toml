@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "prediction-market-example"
+version = "0.1.0"
+description = "A simple prediction market implemented in vyper. It duplicates UMA's tutorial guide."
+authors = ["Muwawu Moses <mosesmuwawu@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+eth-ape = {extras = ["recommended-plugins"], version = "^0.8.24"}
+snekmate = "^0.1.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

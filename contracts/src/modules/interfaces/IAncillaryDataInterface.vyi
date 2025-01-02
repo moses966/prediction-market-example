@@ -1,0 +1,47 @@
+# pragma version ^0.4.0
+
+@external
+def toUtf8Bytes(data: bytes32) -> Bytes[64]:
+    return ...
+
+@external
+def toUtf8Address(addr: address) -> Bytes[64]:
+    return ...
+
+@external
+def toUtf8BytesUint(num: uint256) -> Bytes[64]:
+    return ...
+
+@external
+def appendKeyValueBytes32(
+    current_data: Bytes[256],
+    key: Bytes[64],
+    _value: bytes32
+) -> Bytes[256]:
+    return ...
+
+
+@external
+def appendKeyValueAddress(
+    current_data: Bytes[256],
+    key: Bytes[64],
+    _value: address
+) -> Bytes[256]:
+    return ...
+
+
+@external
+def appendKeyValueUint(
+    current_data: Bytes[256],
+    key: Bytes[64],
+    _value: uint256
+) -> Bytes[256]:
+    return ...
+
+
+@external
+def constructPrefix(
+    current_data: Bytes[256],
+    key: Bytes[64]
+) -> Bytes[64]:
+    return ...

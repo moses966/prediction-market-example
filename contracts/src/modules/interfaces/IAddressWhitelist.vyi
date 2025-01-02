@@ -1,0 +1,70 @@
+# pragma version ^0.4.0
+
+
+@external
+def addToWhitelist(newElement: address): 
+    """
+    @notice Adds an address to the whitelist.
+        Restricted to Owner.
+    @param newElement The new address to add.
+    """
+    ...
+
+@external
+def removeFromWhitelist(elementToRemove: address): 
+    """
+    @notice Removes an address from the whitelist.
+        Restricted to Owner.
+    @param elementToRemove The existing address to remove.
+    """
+    ...
+
+@external
+@view
+def isOnWhitelist(elementToCheck: address) -> bool: 
+    """
+    @notice Checks whether an address is on the whitelist.
+    @param elementToCheck The address to check.
+    @return True if `elementToCheck` is on the whitelist, or False.
+    """
+    return ...
+
+@external
+@view
+def getWhitelist() -> DynArray[address, 1024]: 
+    """
+    @notice Gets all addresses that are currently included in the whitelist.
+    @dev Note: This method skips over, but still iterates through addresses. 
+        It is possible for this call to run out of gas if a large number of addresses 
+        have been removed. To reduce the likelihood of this unlikely scenario, we 
+        can modify the implementation so that when addresses are removed, the last 
+        addresses in the array is moved to the empty index.
+    @return activeWhitelist The list of addresses on the whitelist.
+    """
+    ...
+
+@external
+@view
+def owner() -> address: 
+    """
+    @dev Returns the address of the current owner.
+    @return The address of the current owner.
+    """
+    return ...
+
+@external
+def renounceOwnership(): 
+    """
+    @dev Leaves the contract without owner. It will not be possible to call
+       `onlyOwner` functions anymore. Can only be called by the current owner.
+    """
+    ...
+
+@external
+def transferOwnership(newOwner: address): 
+    """
+    @dev Transfers ownership of the contract to a new account (`newOwner`).
+        Can only be called by the current owner.
+    @param newOwner The address of the new owner.
+    """
+    ...

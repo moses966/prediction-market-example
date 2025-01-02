@@ -1,0 +1,24 @@
+# pragma version ^0.4.0
+
+"""
+@title Optimistic Oracle V3 Callback Recipient Interface
+@notice Interface for contracts implementing callbacks to be received from the Optimistic Oracle V3.
+"""
+
+
+@external
+def assertionResolvedCallback(assertionId: bytes32, assertedTruthfully: bool):
+    """
+    @notice Callback function that is called by Optimistic Oracle V3 when an assertion is resolved.
+    @param assertionId The identifier of the assertion that was resolved.
+    @param assertedTruthfully Whether the assertion was resolved as truthful or not.
+    """
+    ...
+
+@external
+def assertionDisputedCallback(assertionId: bytes32):
+    """
+    @notice Callback function that is called by Optimistic Oracle V3 when an assertion is disputed.
+    @param assertionId The identifier of the assertion that was disputed.
+    """
+    ...

@@ -1,0 +1,46 @@
+# pragma version ^0.4.0
+
+@external
+def changeImplementationAddress(interfaceName: bytes32, implementationAddress: address): 
+    """
+    @notice Updates the address of the contract that implements `interfaceName`.
+    @param interfaceName The bytes32 encoding of the interface name that is either changed or registered.
+    @param implementationAddress The address of the deployed contract that implements the interface.
+    """
+    ...
+
+@external
+@view
+def getImplementationAddress(interfaceName: bytes32) -> address: 
+    """
+    @notice Gets the address of the contract that implements the given `interfaceName`.
+    @param interfaceName The queried interface.
+    @return address The address of the deployed contract that implements the interface.
+    """
+    return ...
+
+@external
+@view
+def owner() -> address: 
+    """
+    @dev Returns the address of the current owner.
+    @return The address of the current owner.
+    """
+    return ...
+
+@external
+def renounceOwnership(): 
+    """
+    @dev Leaves the contract without owner. It will not be possible to call
+       `onlyOwner` functions anymore. Can only be called by the current owner.
+    """
+    ...
+
+@external
+def transferOwnership(newOwner: address): 
+    """
+    @dev Transfers ownership of the contract to a new account (`newOwner`).
+        Can only be called by the current owner.
+    @param newOwner The address of the new owner.
+    """
+    ...

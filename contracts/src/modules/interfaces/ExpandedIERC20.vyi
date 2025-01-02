@@ -1,0 +1,64 @@
+# pragma version ^0.4.0
+
+@view
+@external
+def balanceOf(_addr: address) -> uint256:
+    return ...
+    
+@external
+def burn(_value: uint256):
+    """
+    @notice Burns a specific amount of the caller's tokens.
+    @dev Only burns the caller's tokens, so it is safe to leave this method permissionless.
+    @param _value The amount of tokens to burn.
+    """
+    ...
+
+@external
+def burn_from(recipient: address, _value: uint256):
+    """
+    @dev Burns `_value` tokens owned by `recipient`.
+    @param recipient The address to burn tokens from.
+    @param _value The amount of tokens to burn.
+    @return A boolean indicating success.
+    """
+    ...
+
+@external
+def mint(to: address, _value: uint256):
+    """
+    @notice Mints tokens and adds them to the balance of the `to` address.
+    @dev This method should be permissioned to only allow designated parties to mint tokens.
+    @param to The address to mint tokens to.
+    @param _value The amount of tokens to mint.
+    """
+    ...
+
+@external
+def add_minter(account: address):
+    """
+    @dev Adds a new minter to the contract.
+    @param account The address to grant minting rights.
+    """
+    ...
+
+@external
+def add_burner(account: address):
+    """
+    @dev Adds a new burner to the contract.
+    @param account The address to grant burning rights.
+    """
+    ...
+
+@external
+def grantRole(role: bytes32, account: address):
+    """
+    @dev Grants `role` to `account`.
+    @notice If `account` had not been already
+            granted `role`, emits a `RoleGranted`
+            event. Note that the caller must have
+            `role`'s admin role.
+    @param role The 32-byte role definition.
+    @param account The 20-byte address of the account.
+    """
+    ...

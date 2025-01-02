@@ -1,0 +1,160 @@
+# pragma version ^0.4.0
+
+"""
+@title Optimistic Oracle V3 Interface.
+@notice The OOv3 is used to assert truths about the world which are verified using an optimistic escalation game.
+@dev Core idea: an asserter makes a statement about a truth, calling "assertTruth". If this statement is not
+   challenged, it is taken as the state of the world. If challenged, it is arbitrated using the UMA DVM, or if
+   configured, an escalation manager. Escalation managers enable integrations to define their own security properties and
+   tradeoffs, enabling the notion of "sovereign security".
+"""
+# EscalationManagerSettings struct
+struct EscalationManagerSettings:
+    arbitrateViaEscalationManager: bool  # False if the DVM is used as an oracle (EscalationManager on True).
+    discardOracle: bool  # False if Oracle result is used for resolving assertion after dispute.
+    validateDisputers: bool  # True if the EM isDisputeAllowed should be checked on disputes.
+    assertingCaller: address  # Stores msg.sender when assertion was made.
+    escalationManager: address  # Address of the escalation manager (zero address if not configured).
+
+# Assertion struct
+struct Assertion:
+    escalationManagerSettings: EscalationManagerSettings  # Settings related to the escalation manager.
+    asserter: address  # Address of the asserter.
+    assertionTime: uint256  # Time of the assertion (use uint256 instead of uint64 in Vyper).
+    settled: bool  # True if the request is settled.
+    currency: address  # Address of the ERC20 token used to pay rewards and fees.
+    expirationTime: uint256  # Unix timestamp marking threshold when the assertion can no longer be disputed.
+    settlementResolution: bool  # Resolution of the assertion (false till resolved).
+    domainId: bytes32  # Optional domain that can be used to relate the assertion to others in the escalationManager.
+    identifier: bytes32  # UMA DVM identifier to use for price requests in the event of a dispute.
+    bond: uint256  # Amount of currency that the asserter has bonded.
+    callbackRecipient: address  # Address that receives the callback.
+    disputer: address  # Address of the disputer.
+
+@view
+@external
+def defaultIdentifier() -> bytes32:
+    return ...
+
+@external
+def assertTruth(
+        claim: Bytes[920],
+        asserter: address,
+        callbackRecipient: address,
+        escalationManager: address,
+        liveness: uint64,
+        currency: address,
+        bond: uint256,
+        identifier: bytes32,
+        domainId: bytes32
+    ) -> bytes32:
+    """
+    @notice Asserts a truth about the world, using a fully custom configuration.
+    @dev The caller must approve this contract to spend at least bond amount of currency.
+    @param claim the truth claim being asserted. This is an assertion about the world, and is verified by disputers.
+    @param asserter account that receives bonds back at settlement. This could be msg.sender or
+        any other account that the caller wants to receive the bond at settlement time.
+    @param callbackRecipient if configured, this address will receive a function call assertionResolvedCallback and
+        assertionDisputedCallback at resolution or dispute respectively. Enables dynamic responses to these events. The
+        recipient _must_ implement these callbacks and not revert or the assertion resolution will be blocked.
+    @param escalationManager if configured, this address will control escalation properties of the assertion. This
+        means a) choosing to arbitrate via the UMA DVM, b) choosing to discard assertions on dispute, or choosing to
+        validate disputes. Combining these, the asserter can define their own security properties for the assertion.
+        escalationManager also _must_ implement the same callbacks as callbackRecipient.
+    @param liveness time to wait before the assertion can be resolved. Assertion can be disputed in this time.
+    @param currency bond currency pulled from the caller and held in escrow until the assertion is resolved.
+    @param bond amount of currency to pull from the caller and hold in escrow until the assertion is resolved. This
+        must be >= getMinimumBond(address(currency)).
+    @param identifier UMA DVM identifier to use for price requests in the event of a dispute. Must be pre-approved.
+    @param domainId optional domain that can be used to relate this assertion to others in the escalationManager and
+        can be used by the configured escalationManager to define custom behavior for groups of assertions. This is
+        typically used for "escalation games" by changing bonds or other assertion properties based on the other
+        assertions that have come before. If not needed this value should be 0 to save gas.
+    @return assertionId unique identifier for this assertion.
+    """
+    return ...
+
+@external
+def assertTruthWithDefaults(claim: Bytes[1], asserter: address) -> bytes32:
+    """
+    @notice Asserts a truth about the world, using the default currency and liveness. No callback recipient or
+        escalation manager is enabled. The caller is expected to provide a bond of finalFee/burnedBondPercentage
+        (with burnedBondPercentage set to 50%, the bond is 2x final fee) of the default currency.
+    @dev The caller must approve this contract to spend at least the result of getMinimumBond(defaultCurrency).
+    @param claim the truth claim being asserted. This is an assertion about the world, and is verified by disputers.
+    @param asserter account that receives bonds back at settlement. This could be msg.sender or
+        any other account that the caller wants to receive the bond at settlement time.
+    @return assertionId unique identifier for this assertion.
+    """
+    return ...
+
+@external
+def settleAndGetAssertionResult(assertionId: bytes32) -> bool:
+    """
+    @notice Settles an assertion and returns the resolution.
+    @param assertionId unique identifier for the assertion to resolve and return the resolution for.
+    @return resolution of the assertion.
+    """
+    return ...
+
+@external
+def disputeAssertion(assertionId: bytes32, disputer: address):
+    """
+    @notice Disputes an assertion. Depending on how the assertion was configured, this may either escalate to the UMA
+       DVM or the configured escalation manager for arbitration.
+    @dev The caller must approve this contract to spend at least bond amount of currency for the associated assertion.
+    @param assertionId unique identifier for the assertion to dispute.
+    @param disputer receives bonds back at settlement.
+    """
+    ...
+
+@view
+@external
+def getAssertionResult(assertionId: bytes32) -> bool:
+    """
+    @notice Fetches the resolution of a specific assertion and returns it. If the assertion has not been settled then
+        this will revert. If the assertion was disputed and configured to discard the oracle resolution return false.
+    @param assertionId unique identifier for the assertion to fetch the resolution for.
+    @return resolution of the assertion.
+    """
+    return ...
+
+@view
+@external
+def getAssertion(assertionId: bytes32) -> Assertion:
+    """
+    @notice Fetches information about a specific assertion and returns it.
+    @param assertionId unique identifier for the assertion to fetch information for.
+    @return assertion information about the assertion.
+    """
+    return ...
+
+@view
+@external
+def getCurrentTime() -> uint256:
+    """
+    @notice Returns the current block timestamp.
+    @return current block timestamp.
+    """
+    return ...
+    
+@view
+@external
+def stampAssertion(assertionId: bytes32) -> Bytes[1]:
+    """
+    @notice Appends information onto an assertionId to construct ancillary data used for dispute resolution.
+    @param assertionId unique identifier for the assertion to construct ancillary data for.
+    @return ancillaryData stamped assertion information.
+    """
+    return ...
+
+@view
+@external
+def getMinimumBond(currency: address) -> uint256:
+    """
+    @notice Returns the minimum bond amount required to make an assertion. This is calculated as the final fee of the
+        currency divided by the burnedBondPercentage. If burn percentage is 50% then the min bond is 2x the final fee.
+    @param currency currency to calculate the minimum bond for.
+    @return minimum bond amount.
+    """
+    return ...
